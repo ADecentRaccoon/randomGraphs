@@ -31,8 +31,3 @@ UsersData getUserRequest() {
     cin >> datauser.nodes;
     return datauser;
 }
-
-int main(){
-    UsersData c = getUserRequest();
-    return 0;
-}

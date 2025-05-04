@@ -1,64 +1,58 @@
+#include "gui.h"
 #include <SFML/Graphics.hpp>
-#include <vector>
 #include <iostream>
+#include "logic.h"
 #include <random>
+#include <iomanip>
+#include <sstream>
+
 using namespace sf;
 using namespace std;
 
-class Gui{
-public:
-    Gui() {
-        if (!font.loadFromFile("font.ttf")) {
-            cerr << "Error loading font" << endl;
-        }
-        window.create(VideoMode(750, 750), "Erdős–Rényi model");
-        srand(time(NULL));
+
+Gui::Gui() {
+    if (!font.loadFromFile("font.ttf")) {
+        cerr << "Error loading font" << endl;
     }
+    window.create(VideoMode(750, 750), "Erdős–Rényi model");
+    srand(time(NULL));
+}
 
-    void run(){
-        for (int i = 0; i < 10; i++){
-            createNode(i);
-        }
-        while (window.isOpen())
-        {
-            handleEvent();
-            render();
-        }
-        
+void Gui::run(int nodes, vector<pair<int, int>>& graph, graphInfo& info){
+    for (int i = 0; i < nodes; i++){
+        createNode(i);
     }
-
-private:
-    RenderWindow window;
-    vector<Vector2f> points;
-    Text text;
-    Font font;
-    void handleEvent(){
-        Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == Event::Closed) window.close();
-        }
-        
+    while (window.isOpen())
+    {
+        handleEvent();
+        render(graph, nodes, info);
     }
+}
 
-    void render(){
-        window.clear(Color::White);
-        drawNodes();
-        connectNodes(3, 4);
-        window.display();
+void Gui::handleEvent(){
+    Event event;
+    while (window.pollEvent(event))
+    {
+        if (event.type == Event::Closed) window.close();
     }
+}
 
+void Gui::render(vector<pair<int, int>>& graph, int nodes, graphInfo& info){
+    window.clear(Color::White);
+    drawNodes();
+    connectNodes(graph);
+    renderData(info);
+    window.display();
+}
 
-    void createNode(int number){
-        int xCoord = rand() % 700 + 1;
-        int yCoord = rand() % 700 + 1;
-        cout << xCoord << endl;
-        cout << yCoord << endl;
-        points.push_back(Vector2f(xCoord, yCoord));
-    }
+void Gui::createNode(int number){
+    int xCoord = rand() % 500 + 1;
+    int yCoord = rand() % 500 + 1;
+    points.push_back(Vector2f(xCoord, yCoord));
+}
 
-    void drawNodes(){
-        for (int i = 0; i < points.size(); i++){
+void Gui::drawNodes(){
+    for (int i = 0; i < points.size(); i++){
         int xCoord = points[i].x;
         int yCoord = points[i].y;
         CircleShape shape(15);
@@ -73,22 +67,45 @@ private:
         text.setPosition(xCoord, yCoord);
         window.draw(shape);
         window.draw(text);
-        }
     }
+}
 
-    void connectNodes(int firstPoint, int secondPoint){
-        VertexArray line(Lines, 2);
-        line[0].position = points[firstPoint];
-        line[1].position = points[secondPoint];
-        
+void Gui::connectNodes(vector<pair<int, int>>& graph){
+    VertexArray line(Lines, 2);
+    for (pair<int, int> connPair : graph){
+        line[0].position = points[connPair.first];
+        line[1].position = points[connPair.second];
+
         line[0].color = Color::Black;
         line[1].color = Color::Black;
         window.draw(line);
     }
-};
+}
 
-int main(){
-    Gui gui;
-    gui.run();
-    return 0;
+void Gui::renderData(graphInfo& info) {
+    const int Xtext = 550;
+
+    text.setFont(font);
+    text.setCharacterSize(20);
+    text.setFillColor(Color::Black);
+
+    text.setString(info.connected ? "Graph is connected." : "Graph is not connected.");
+    text.setPosition(Xtext, 10);
+    window.draw(text);
+
+    text.setString(info.cycled ? "Graph is cyclic." : "Graph is a forest.");
+    text.setPosition(Xtext, 30);
+    window.draw(text);
+
+    std::stringstream ss;
+    ss << "Diameter: " << info.diameter;
+    text.setString(ss.str());
+    text.setPosition(Xtext, 50);
+    window.draw(text);
+
+    ss.str("");
+    ss << "Average degree: " << fixed << setprecision(2) << info.degreeAverage;
+    text.setString(ss.str());
+    text.setPosition(Xtext, 70);
+    window.draw(text);
 }
