@@ -12,7 +12,7 @@ vector<pair<int, int>> createGnp(int quantityOfNodes, float probability){
     for(int i = 0; i < quantityOfNodes; i++){
         for(int p = i + 1; p < quantityOfNodes; p++){
             float prob = static_cast<float>(rand()) / RAND_MAX;
-            if (prob > probability){
+            if (prob < probability){
                 ans.push_back(make_pair(i, p));
             } else continue;
         }
