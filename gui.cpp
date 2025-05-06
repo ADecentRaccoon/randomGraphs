@@ -1,8 +1,8 @@
 #include "gui.h"
 #include <SFML/Graphics.hpp>
+#include "getUserData.h"
 #include <iostream>
 #include "logic.h"
-#include <random>
 #include <iomanip>
 #include <sstream>
 
@@ -18,14 +18,14 @@ Gui::Gui() {
     srand(time(NULL));
 }
 
-void Gui::run(int nodes, vector<pair<int, int>>& graph, graphInfo& info){
+void Gui::run(int nodes, vector<pair<int, int>>& graph, graphInfo& info, UsersData& request){
     for (int i = 0; i < nodes; i++){
         createNode(i);
     }
     while (window.isOpen())
     {
         handleEvent();
-        render(graph, nodes, info);
+        render(graph, nodes, info, request);
     }
 }
 
@@ -37,11 +37,11 @@ void Gui::handleEvent(){
     }
 }
 
-void Gui::render(vector<pair<int, int>>& graph, int nodes, graphInfo& info){
+void Gui::render(vector<pair<int, int>>& graph, int nodes, graphInfo& info, UsersData& request){
     window.clear(Color::White);
     drawNodes();
     connectNodes(graph);
-    renderData(info);
+    renderData(info, request);
     window.display();
 }
 
@@ -82,7 +82,7 @@ void Gui::connectNodes(vector<pair<int, int>>& graph){
     }
 }
 
-void Gui::renderData(graphInfo& info) {
+void Gui::renderData(graphInfo& info, UsersData& request) {
     const int Xtext = 550;
 
     text.setFont(font);
@@ -108,4 +108,22 @@ void Gui::renderData(graphInfo& info) {
     text.setString(ss.str());
     text.setPosition(Xtext, 70);
     window.draw(text);
+
+    ss.str("");
+    ss << "Quantity of nodes: " << request.nodes;
+    text.setString(ss.str());
+    text.setPosition(Xtext, 100);
+    window.draw(text);
+
+    ss.str("");
+    if (request.typeOfModel == 1){
+        ss << "P: " << request.PorVec;
+    } else if(request.typeOfModel == 2) {
+        ss << "Quantity of edges" << request.PorVec;
+    }
+    text.setString(ss.str());
+    text.setPosition(Xtext, 120);
+    window.draw(text);
+
+
 }

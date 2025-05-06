@@ -7,12 +7,13 @@
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include "logic.h"
+#include "getUserData.h"
 
 
 class Gui {
 public:
     Gui();
-    void run(int nodes, vector<pair<int, int>>& graph, graphInfo& info);
+    void run(int nodes, vector<pair<int, int>>& graph, graphInfo& info, UsersData& request);
 
 private:
     sf::RenderWindow window;
@@ -21,11 +22,11 @@ private:
     sf::Font font;
 
     void handleEvent();
-    void render(vector<pair<int, int>>& graph, int nodes, graphInfo& info);
+    void render(vector<pair<int, int>>& graph, int nodes, graphInfo& info, UsersData& request);
     void createNode(int number);
     void drawNodes();
     void connectNodes(std::vector<std::pair<int, int>>& graph);
-    void renderData(graphInfo& info);
+    void renderData(graphInfo& info, UsersData& request);
 };
 
 #endif
