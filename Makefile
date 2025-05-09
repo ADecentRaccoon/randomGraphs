@@ -2,7 +2,7 @@
 CXX_WINDOWS = x86_64-w64-mingw32-g++
 
 # Пути
-SFML_WINDOWS_DIR = /home/user/code/c++/libs/SFML-3.0.0-windows-gcc-14.2.0-mingw-64-bit/SFML-3.0.0
+SFML_WINDOWS_DIR = SFML-2.6.2-windows-gcc-13.1.0-mingw-64-bit/SFML-2.6.2
 
 # Файлы
 SRC = /home/user/code/c++/Cpp/RandomGrafs
@@ -15,4 +15,4 @@ CXXFLAGS_WINDOWS = -mconsole -I$(SFML_WINDOWS_DIR)/include \
   -lsfml-graphics -lsfml-window -lsfml-system
 
 default:
-	$(CXX_WINDOWS) /home/user/code/c++/Cpp/RandomGrafs/main.cpp /home/user/code/c++/Cpp/RandomGrafs /home/user/code/c++/Cpp/RandomGrafs/getUserData.cpp /home/user/code/c++/Cpp/RandomGrafs/gui.cpp -o $(OUT_WINDOWS) $(CXXFLAGS_WINDOWS)
+	$(CXX_WINDOWS) /home/user/code/c++/Cpp/RandomGrafs/main.cpp /home/user/code/c++/Cpp/RandomGrafs/logic.cpp /home/user/code/c++/Cpp/RandomGrafs/getUserData.cpp /home/user/code/c++/Cpp/RandomGrafs/gui.cpp -o $(OUT_WINDOWS) $(CXXFLAGS_WINDOWS)

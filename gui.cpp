@@ -46,8 +46,8 @@ void Gui::render(vector<pair<int, int>>& graph, int nodes, graphInfo& info, User
 }
 
 void Gui::createNode(int number){
-    int xCoord = rand() % 500 + 1;
-    int yCoord = rand() % 500 + 1;
+    int xCoord = rand() % 461 + 40;
+    int yCoord = rand() % 461 + 40;
     points.push_back(Vector2f(xCoord, yCoord));
 }
 
