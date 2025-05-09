@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <random>
 #include <queue>
+#include <ctime>
 using namespace std;
 
 vector<pair<int, int>> createGnp(int quantityOfNodes, float probability){
